@@ -7,6 +7,7 @@ import mlflow
 import mlflow.sklearn
 
 import logging
+import warnings
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -63,7 +64,9 @@ def main():
     model = mlflow.sklearn.load_model(model_uri)
 
     # Make predictions
-    submission = model.predict(X_test)
+    with warnings.catch_warnings(action="ignore"):
+        submission = model.predict(X_test)
+
     test_processed["Survived_pred"] = submission
     test_processed["Survived_actual"] = y_test
     test_processed["PassengerId"] = passId

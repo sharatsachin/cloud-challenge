@@ -1,3 +1,4 @@
+import argparse
 import subprocess
 import json
 import sys
@@ -27,11 +28,20 @@ logger = logging.getLogger(__name__)
 
 def main():
     logger.info("Entering runner script")
-    files_to_run = [
-        "src/data_prep.py",
-        "src/train.py",
-        "src/predict.py",
-    ]
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--json_args",
+        default='{"steps": ["src/data_prep.py", "src/train.py", "src/predict.py"]}',
+    )
+    args = parser.parse_args()
+
+    print(args.json_args)
+
+    args = json.loads(args.json_args)
+    logger.info(f"args: {args}")
+
+    files_to_run = args["steps"]
 
     common_json = "config/common.json"
     with open(common_json) as f:

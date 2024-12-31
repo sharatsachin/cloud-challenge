@@ -87,6 +87,7 @@ def save_processed_data(train_processed, test_processed, data_path):
 
 def prepare_data(data_path):
     mlflow.set_experiment("Titanic_Data_Preparation")
+    logging.info("Entering data preparation script")
 
     with mlflow.start_run(run_name="data_prep"):
         logger.info("Loading data")
@@ -120,9 +121,6 @@ def main():
     args = parser.parse_args()
     args = json.loads(args.json_args)
     logger.info(f"args: {args}")
-
-    logging.info("Entering data preparation script")
-
     prepare_data(args["data_path"])
 
 
